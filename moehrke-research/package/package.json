@@ -1,0 +1,12 @@
+﻿{
+	"name": "moehrke.research.template",
+	"type": "fhir.template",
+	"license": "CC-BY-1.0",
+	"description": "Moehrke Research IG Template",
+	"author": "http://johnmoehrke.github.io/",
+	"version": "current",
+	"base": "fhir2.base.template",
+	"dependencies": {
+		"fhir2.base.template": "current"
+	}
+}

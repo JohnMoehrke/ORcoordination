@@ -1,0 +1,20 @@
+== Suppressed Messages ==
+
+# Add warning and/or information messages here after you've confirmed that they aren't really a problem
+# (And include comments like this justifying why)
+# See https://github.com/FHIR/sample-ig/blob/master/input/ignoreWarnings.txt for examples
+
+# us-core still uses #pattern, no problem here
+The discriminator type 'pattern' is deprecated in R5+. For future compatibility, you could consider using type=value with a pattern[x] instead (if this is not an inherited slicing)
+
+# known code as part of the test
+Unknown Code '414.00' in the CodeSystem 'http://hl7.org/fhir/sid/icd-9-cm' version '2015' - note that the code system is labeled as a fragment, so the code may be valid in some other fragment
+
+# disable searches - these come from FHIR core, so I can't change them
+Constraint failed: spd-0: 'Name should be usable as an identifier for the module by machine processing applications such as code generation'
+The left side is inherently a collection, and so the expression 'Observation.component.value as CodeableConcept' may fail or return false if there is more than one item in the content being evaluated
+The left side is inherently a collection, and so the expression 'Observation.component.value as Quantity' may fail or return false if there is more than one item in the content being evaluated
+The left side is inherently a collection, and so the expression 'Observation.component.value as SampledData' may fail or return false if there is more than one item in the content being evaluated
+
+# inherited from core 
+The extension http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet|5.2.0 is deprecated
