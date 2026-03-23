@@ -1,12 +1,14 @@
-// Logical Model for OR coordination. 
-// The control resource is a logical model that coordinates the execution of two or more tasks.
-// This is created upon first order for an OR event. -- ServiceRequest
-// The control resource includes the identifier of that request, the identifier of the patient, the code for the procedure (Procedure).
-// Coordinating the OR room reservation, the surgical team, the anesthesia team, the necessary equipment and supplies, and any other resources needed for the procedure.
-// Linkage to Encounter or EpisodeOfCare to track overall care coordination.
-// Creation of CareTeam to coordinate the whole surgical team.
-// The control resource has a set of repeating elements for each of the tasks that need to be coordinated. Who/What is needed, when is it needed, what is the status of that task (not started, in progress, completed, etc).
-// The control resource also has a field for the overall status of the coordination (not started, in progress, completed, etc).
+/*
+ Logical Model for OR coordination. 
+The control resource is a logical model that coordinates the execution of two or more tasks.
+This is created upon first order for an OR event. -- ServiceRequest
+The control resource includes the identifier of that request, the identifier of the patient, the code for the procedure (Procedure).
+Coordinating the OR room reservation, the surgical team, the anesthesia team, the necessary equipment and supplies, and any other resources needed for the procedure.
+Linkage to Encounter or EpisodeOfCare to track overall care coordination.
+Creation of CareTeam to coordinate the whole surgical team.
+The control resource has a set of repeating elements for each of the tasks that need to be coordinated. Who/What is needed, when is it needed, what is the status of that task (not started, in progress, completed, etc).
+The control resource also has a field for the overall status of the coordination (not started, in progress, completed, etc).
+*/
 Logical: Coordination
 Id: Coordination
 Title: "Coordination Logical Model"
