@@ -8,6 +8,8 @@ This IG is a project of [1OR Health](https://1orhealth.com/), a company dedicate
 
 Download the entire implementation guide [here](full-ig.zip)
 
+The logical models are available in [CSV format](../csvs.zip) and [Excel XLSX format](../excels.zip).
+
 {% include cross-version-analysis-inline.xhtml %}
 
 ### Source
