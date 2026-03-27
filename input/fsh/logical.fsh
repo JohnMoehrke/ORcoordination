@@ -1,46 +1,124 @@
-/*
- Logical Model for OR coordination. 
-The control resource is a logical model that coordinates the execution of two or more tasks.
-This is created upon first order for an OR event. -- ServiceRequest
-The control resource includes the identifier of that request, the identifier of the patient, the code for the procedure (Procedure).
-Coordinating the OR room reservation, the surgical team, the anesthesia team, the necessary equipment and supplies, and any other resources needed for the procedure.
-Linkage to Encounter or EpisodeOfCare to track overall care coordination.
-Creation of CareTeam to coordinate the whole surgical team.
-The control resource has a set of repeating elements for each of the tasks that need to be coordinated. Who/What is needed, when is it needed, what is the status of that task (not started, in progress, completed, etc).
-The control resource also has a field for the overall status of the coordination (not started, in progress, completed, etc).
-*/
-Logical: Coordination
-Id: Coordination
-Title: "Coordination Logical Model"
+
+
+Logical: Case
+Id: Case
+Title: "Case Logical Model"
 Description: """
-A conceptual model representing coordination activities across care teams,
-organizations, and systems. Captures the who/what/when/why of coordination
-without prescribing a specific workflow or FHIR resource.
+A conceptual model representing a case or episode of care. Captures the clinical and administrative details of a case without prescribing a specific workflow or FHIR resource.
 """
 
-* identifier 0..* Identifier "Identifiers for this coordination instance"
-* status 1..1 code "The current state of the coordination activity (e.g., draft, active, completed)"
-* category 0..* CodeableConcept "Type of coordination (care coordination, service coordination, scheduling, transition of care)"
-* focus 0..1 Reference "The primary clinical focus (Condition, ServiceRequest, EpisodeOfCare, etc.)"
-* subject 1..1 Reference "The patient or entity for whom coordination is being performed"
-* reason 0..* CodeableConcept "Why coordination is needed"
-* description 0..1 string "Narrative description of the coordination activity"
+* caseId 1..1 Identifier "Unique identifier for the case"
 
-* coordinator 0..1 Reference "Primary coordinator (Practitioner, PractitionerRole, Organization)"
-* participants 0..* Reference "Other participants involved in coordination"
+* externalIds 0..* BackboneElement "External identifiers from connected systems"
+* externalIds.ehrAppointmentId 0..1 Identifier "Appointment identifier from the EHR"
+* externalIds.ehrProcedureId 0..1 Identifier "Procedure/order identifier from the EHR"
 
-* period 0..1 Period "Time period during which coordination is active"
-* created 0..1 dateTime "When this coordination record was created"
-* lastUpdated 0..1 dateTime "When this coordination record was last updated"
+* patientId 1..1 Identifier "Identifier for the patient"
+* surgeonId 0..* Identifier "Identifier for the primary surgeon"
+* facilityId 0..1 Identifier "Identifier for the facility"
+* scheduledTime 0..1 dateTime "Scheduled date/time for the case"
 
-* relatedTask 0..* Reference "Associated workflow Tasks"
-* relatedRequest 0..* Reference "Associated ServiceRequests or other requests"
-* relatedEncounter 0..* Reference "Associated Encounters (e.g., care transitions)"
+* status 1..1 BackboneElement "Case readiness status details"
+* status.readinessStatus 1..1 code "Readiness state: NOT_READY | AT_RISK | READY | VERIFIED"
+* status.readinessScore 0..1 decimal "Numeric readiness score"
 
-* communication 0..* BackboneElement "Communication events related to coordination"
-* communication.type 0..1 CodeableConcept "Type of communication (call, message, meeting)"
-* communication.date 0..1 dateTime "When the communication occurred"
-* communication.participant 0..* Reference "Participants in the communication"
-* communication.note 0..1 string "Summary of the communication"
+* vendorAssignment 0..* BackboneElement "Assigned vendor and representative for the case"
+* vendorAssignment.vendorId 0..1 Identifier "Identifier for the assigned vendor"
+* vendorAssignment.repId 0..1 Identifier "Identifier for the assigned representative"
+* vendorAssignment.confirmed 0..1 boolean "Whether assignment has been confirmed"
+* vendorAssignment.confirmationTimestamp 0..1 dateTime "When assignment confirmation occurred"
 
-* note 0..* Annotation "Additional notes about the coordination activity"
+
+Logical: Task
+Id: Task
+Title: "Task Logical Model"
+Description: """
+A conceptual model representing a task or activity that needs to be performed as part of care coordination. Captures the details of the task without prescribing a specific workflow or FHIR resource.
+"""
+
+* taskId 1..1 Identifier "Unique identifier for the task"
+* caseId 1..1 Identifier "Identifier of the case this task belongs to"
+
+* type 1..1 code "Task type: VENDOR_CONFIRMATION | IMPLANT_AVAILABILITY | CONSENT_COMPLETE | CLEARANCE_COMPLETE"
+
+* assignedTo 1..1 BackboneElement "Entity assigned to complete the task"
+* assignedTo.entityType 1..1 code "Assigned entity type: VENDOR | FACILITY | SURGEON"
+* assignedTo.entityId 1..1 Identifier "Identifier of the assigned entity"
+
+* dueTime 0..1 dateTime "Date/time by which the task should be completed"
+* status 1..1 code "Task status: PENDING | COMPLETED | FAILED"
+
+* completion 0..1 BackboneElement "Completion details for the task"
+* completion.timestamp 0..1 dateTime "When the task was completed"
+* completion.method 0..1 code "Completion method: SYSTEM | USER | API | MESSAGE_LINK"
+
+
+Logical: Verification
+Id: Verification
+Title: "Verification Logical Model"
+Description: """
+A conceptual model representing a verification event tied to a case and task. Captures who verified, how verification was performed, timing, and confidence.
+
+Key Concept: 
+Verification transforms assumed completion into confirmed truth. 
+"""
+
+* verificationId 1..1 Identifier "Unique identifier for the verification event"
+* caseId 1..1 Identifier "Identifier of the related case"
+* taskId 1..1 Identifier "Identifier of the related task"
+
+* verifiedBy 1..1 BackboneElement "Entity that performed the verification"
+* verifiedBy.entityType 1..1 code "Type of verifying entity"
+* verifiedBy.entityId 1..1 Identifier "Identifier of the verifying entity"
+
+* verificationMethod 1..1 code "Verification method: MANUAL_CONFIRMATION | SYSTEM_SYNC | MESSAGE_RESPONSE | AUTO_MATCH"
+
+* timestamp 1..1 dateTime "When the verification occurred"
+* confidenceScore 0..1 decimal "Confidence score associated with the verification"
+
+
+Logical: EventTimeline
+Id: EventTimeline
+Title: "EventTimeline (Audit Layer) Logical Model"
+Description: """
+A conceptual model representing timeline events associated with a case. Captures event type, actor, timing, and additional context metadata.
+"""
+
+* eventId 1..1 Identifier "Unique identifier for the event"
+* caseId 1..1 Identifier "Identifier of the related case"
+
+* type 1..1 code "Event type: TASK_CREATED | TASK_COMPLETED | VENDOR_CONFIRMED | CASE_FLAGGED | DELAY_OCCURRED"
+
+* actor 0..1 Identifier "Identifier of the actor responsible for or associated with the event"
+* timestamp 1..1 dateTime "When the event occurred"
+* metadata 0..1 string "Additional event context as serialized metadata"
+
+
+Logical: Attribution
+Id: Attribution
+Title: "Attribution (Economic Layer) Logical Model"
+Description: """
+A conceptual model representing delay and cancellation attribution for a case, including cause classification and preventability.
+
+Aligned with pilot metrics and operational tracking: 
+- Delay minutes 
+- Cancellation rates 
+- Vendor-related workflow failures
+
+This directly supports: 
+- OR efficiency analysis 
+- Revenue recovery modeling 
+- ROI measurement during pilots
+"""
+
+* caseId 1..1 Identifier "Identifier of the related case"
+
+* delayMinutes 0..1 integer "Total delay in minutes"
+* delayCause 0..1 code "Delay cause: VENDOR | FACILITY | SURGEON | UNKNOWN"
+
+* cancellation 0..1 BackboneElement "Cancellation details for the case"
+* cancellation.occurred 1..1 boolean "Whether cancellation occurred"
+* cancellation.cause 0..1 string "Cause of cancellation"
+
+* preventable 0..1 boolean "Whether the delay or cancellation was preventable"
+

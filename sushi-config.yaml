@@ -12,7 +12,7 @@ copyrightYear: 2021+
 releaseLabel: ci-build
 publisher:
   name: John Moehrke (himself)
-  url: http://healthcaresecprivacy.blogspot.com
+  url: http://MoehrkeResearch.com
   email: JohnMoehrke@gmail.com
 license: CC-BY-SA-4.0
 jurisdiction: 'http://unstats.un.org/unsd/methods/m49/m49.htm#001'
@@ -46,3 +46,4 @@ dependencies:
 menu:
   Home: index.html
   Artifacts: artifacts.html
+  About: about.html
