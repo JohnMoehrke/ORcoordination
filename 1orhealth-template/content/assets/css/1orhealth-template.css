@@ -1,0 +1,33 @@
+/* 
+Color scheme definitions
+
+http://build.fhir.org/ig/FHIR/ig-guidance/index.html
+
+Usage:
+   var(--publish-box-bg-color); 
+   
+   override only those that IHE needs to be different than the default
+   
+*/
+
+:root {
+
+  --ig-status-text-color: #2145e6; /* 1. IG Title and status text color */
+  --navbar-bg-color: #2145e6; /* 2. Header container color */
+  --footer-bg-color: #2145e6; /* 3. Footer background color*/
+  --footer-container-bg-color: #2145e6; /* 4. Footer container color */
+  --stripe-bg-color: #2145e6; /* 5. Header strip color */
+
+  --btn-hover-color: #0093d5;  /* 6. Menu button hover color */
+  --btn-active-color: #2145e6; /* 7. Menu button active color */
+  --btn-text-color: white; /* 8. Menu button text color */
+  --btn-gradient-start-color: #2145e6; /* 9. Menu item gradient start color */
+  --btn-gradient-end-color: #2145e6; /* 10. Menu item gradient end  color */
+  --btn-gradient-start-color-alpha: #2145e6; /* 11. Menu item gradient start color (with alpha) */
+  --btn-gradient-end-color-alpha: #2145e6; /* 12. Menu item gradient end color (with alpha) */
+  
+  --ig-header-color: white; /* 21. Header color (sides) */
+  --ig-header-container-color: white; /* 22. Header container color (center) */
+
+}
+
