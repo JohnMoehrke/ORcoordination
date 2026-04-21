@@ -40,10 +40,22 @@ dependencies:
 #  hl7.fhir.us.core: 6.0.x
 #  hl7.fhir.us.core: 7.0.0
  
+pages:
+  index.md:
+    title: 1OR Coordination
+  logical.md:
+    title: Logical Model
+  fhir.md:
+    title: FHIR Implementation Approach
+  about.md:
+    title: About This Project
+
 # ╭────────────────────────────────────────────menu.xml────────────────────────────────────────────╮
 # │  To use a provided input/includes/menu.xml file, delete the "menu" property below.             │
 # ╰────────────────────────────────────────────────────────────────────────────────────────────────╯
 menu:
   Home: index.html
+  Logical: logical.html
+  FHIR: fhir.html
   Artifacts: artifacts.html
   About: about.html
